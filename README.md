@@ -59,6 +59,7 @@ python3 -m http.server 8000
 ## Estrutura
 
 - `index.html` → layout do painel, formulário e janela de conexão
+- `favicon.svg` → ícone da aba do navegador
 - `style.css` → visual e temas (claro/escuro; na primeira visita segue o tema do seu sistema)
 - `script.js` → métricas, gráficos, timeline e interface do formulário
 - `store.js` → leitura e gravação no GitHub, fila de pendentes, sincronização
