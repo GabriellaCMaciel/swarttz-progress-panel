@@ -14,7 +14,7 @@ O site não tem servidor, então ele grava os registros direto no seu repositór
 
 1. Abra o painel e clique em **+ Registrar progresso**. Na primeira vez aparece a janela **Conectar ao GitHub**.
 2. Clique em **página de criação do token** e, no GitHub:
-   - **Repository access** → `Only select repositories` → marque `swartz-progress-panel`.
+   - **Repository access** → `Only select repositories` → marque `swarttz-progress-panel`.
    - **Permissions → Repository permissions → Contents** → `Read and write`.
    - Clique em **Generate token** e copie o código (`github_pat_…`).
 3. Cole o token na janela e clique em **Conectar**. O formulário abre em seguida.

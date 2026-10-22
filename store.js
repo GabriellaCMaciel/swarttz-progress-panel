@@ -12,7 +12,7 @@
  *  - Sem token, o painel só lê o data/progress.json publicado (modo somente leitura).
  */
 const Store = (() => {
-  const REPO = { owner: "GabriellaCMaciel", repo: "swartz-progress-panel", branch: "main", path: "data/progress.json" };
+  const REPO = { owner: "GabriellaCMaciel", repo: "swarttz-progress-panel", branch: "main", path: "data/progress.json" };
   const API = "https://api.github.com";
   const FILE_URL = `${API}/repos/${REPO.owner}/${REPO.repo}/contents/${REPO.path}`;
   const KEYS = { token: "swartz-gh-token", cache: "swartz-entries-cache", pending: "swartz-pending" };
@@ -415,7 +415,7 @@ const Store = (() => {
       });
       if (response.status === 401) return fail("O GitHub não aceitou esse token. Confira se copiou inteiro.");
       if (response.status === 403 || response.status === 404) {
-        return fail("Esse token não enxerga o repositório swartz-progress-panel. Em Repository access, marque esse repositório.");
+        return fail("Esse token não enxerga o repositório swarttz-progress-panel. Em Repository access, marque esse repositório.");
       }
       if (!response.ok) return fail(`O GitHub respondeu com erro ${response.status}.`);
       const repo = await response.json();
