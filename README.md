@@ -67,7 +67,7 @@ python3 -m http.server 8000
 
 ## Como as métricas funcionam
 
-- **Sequência atual**: dias seguidos com pelo menos um registro, contando até hoje (ou até ontem, se hoje ainda não teve registro). Se o último registro foi antes de ontem, volta a zero.
+- **Dias ativos**: quantos dos últimos 28 dias tiveram pelo menos um registro, em um calendário de quadradinhos (o último é hoje), mais quantas das 4 semanas tiveram registro. Um dia sem registro só fica vazio: nada volta a zero.
 - **Foco da semana**: registros nos últimos 7 dias.
 - **Progresso por mês**: meses em ordem cronológica; meses sem registro aparecem com 0.
 

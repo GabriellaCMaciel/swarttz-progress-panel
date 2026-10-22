@@ -53,24 +53,42 @@ function startOfToday() {
 }
 
 // ---------- métricas ----------
-// Sequência = dias seguidos com registro, contando até hoje (ou até ontem, se hoje ainda não teve registro).
-// Se o último registro foi antes de ontem, a sequência está zerada.
-function calculateStreak(entries) {
-  if (!entries.length) return 0;
-  const uniqueDates = [...new Set(entries.map(entry => entry.date))]
-    .map(parseLocalDate)
-    .sort((a, b) => b - a);
+// Calendário de atividade: um quadradinho por dia, do mais antigo (27 dias atrás) até hoje.
+// Mede regularidade sem punir pausas: um dia sem registro só fica vazio, nada volta a zero.
+const ACTIVITY_DAYS = 28;
 
-  const daysSinceLast = Math.round((startOfToday() - uniqueDates[0]) / 86400000);
-  if (daysSinceLast > 1) return 0;
-
-  let streak = 1;
-  for (let i = 0; i < uniqueDates.length - 1; i++) {
-    const diff = Math.round((uniqueDates[i] - uniqueDates[i + 1]) / 86400000);
-    if (diff === 1) streak++;
-    else break;
+function buildActivity(entries, days = ACTIVITY_DAYS) {
+  const counts = {};
+  entries.forEach(entry => { counts[entry.date] = (counts[entry.date] || 0) + 1; });
+  const today = startOfToday();
+  const cells = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const key = toDateInputValue(date);
+    cells.push({ date: key, count: counts[key] || 0 });
   }
-  return streak;
+  return cells;
+}
+
+function renderActivity(entries) {
+  const cells = buildActivity(entries);
+  const active = cells.filter(cell => cell.count > 0).length;
+  const weeks = [0, 1, 2, 3].filter(week => cells.slice(week * 7, week * 7 + 7).some(cell => cell.count > 0)).length;
+  document.getElementById("activeDays").textContent = plural(active, "dia", "dias");
+  document.getElementById("activeDaysNote").textContent = `nos últimos ${ACTIVITY_DAYS} dias · ${weeks} de 4 semanas com registro`;
+
+  const grid = document.getElementById("activityGrid");
+  grid.setAttribute("aria-label", `${plural(active, "dia com registro", "dias com registro")} nos últimos ${ACTIVITY_DAYS} dias`);
+  grid.innerHTML = "";
+  cells.forEach((cell, index) => {
+    const el = document.createElement("span");
+    el.className = "activity-cell";
+    el.dataset.level = String(Math.min(cell.count, 2));
+    if (index === cells.length - 1) el.classList.add("is-today");
+    el.title = `${formatDate(cell.date)}: ${plural(cell.count, "registro", "registros")}`;
+    grid.appendChild(el);
+  });
 }
 
 function countLast7Days(entries) {
@@ -315,7 +333,7 @@ function renderDashboard(entries, pendingKeys) {
   }).length;
 
   document.getElementById("totalProgress").textContent = entries.length;
-  document.getElementById("currentStreak").textContent = plural(calculateStreak(entries), "dia", "dias");
+  renderActivity(entries);
   document.getElementById("thisMonthCount").textContent = `${thisMonthCount} este mês`;
   document.getElementById("weekFocusValue").textContent = plural(countLast7Days(entries), "registro", "registros");
 
