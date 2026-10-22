@@ -59,7 +59,7 @@ python3 -m http.server 8000
 ## Estrutura
 
 - `index.html` → layout do painel, formulário e janela de conexão
-- `style.css` → visual e temas (claro/escuro)
+- `style.css` → visual e temas (claro/escuro; na primeira visita segue o tema do seu sistema)
 - `script.js` → métricas, gráficos, timeline e interface do formulário
 - `store.js` → leitura e gravação no GitHub, fila de pendentes, sincronização
 - `vendor/chart.umd.min.js` → Chart.js 4.5.1 (MIT), copiado para o repositório para o site não carregar código de terceiros

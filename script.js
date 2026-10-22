@@ -135,7 +135,9 @@ function buildMonthlySeries(entries) {
 // ---------- tema ----------
 function setupTheme() {
   const toggle = document.getElementById("themeToggle");
-  const saved = localStorage.getItem("swartz-theme") || "dark";
+  // Sem escolha salva, segue o tema do sistema (escuro só se o sistema estiver no escuro)
+  const systemDark = Boolean(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const saved = localStorage.getItem("swartz-theme") || (systemDark ? "dark" : "light");
   document.body.setAttribute("data-theme", saved);
   updateThemeLabel(saved);
 
