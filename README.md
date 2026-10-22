@@ -26,7 +26,7 @@ Pronto. No celular, repita o passo 2 e 3 uma vez (cada navegador guarda o seu pr
 ## Como registrar um progresso
 
 1. Clique em **+ Registrar progresso** (ou aperte a tecla **N**).
-2. Escolha o **tipo**, escreva a **descrição** e a **categoria** (as mais usadas aparecem como atalhos). A data já vem como hoje; há botões de **Hoje** e **Ontem**.
+2. Escolha o **tipo**, escreva a **descrição** e a **categoria** (as mais usadas aparecem como atalhos). A data já vem como hoje; há botões de **Hoje** e **Ontem**. Se quiser, cole também um **link de evidência** (repositório, site no ar, certificado ou post): ele aparece no registro como um link clicável.
 3. **Salvar** (ou `Ctrl + Enter`). O registro aparece na hora no painel.
 
 O que acontece por trás:

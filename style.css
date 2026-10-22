@@ -192,6 +192,11 @@ canvas { width: 100% !important; max-height: 320px; }
   padding: 7px 11px; border-radius: 999px; font-size: .78rem; font-weight: 700;
 }
 .timeline-text { line-height: 1.6; }
+.evidence-link {
+  width: fit-content; color: var(--accent); font-size: .84rem; font-weight: 700;
+  text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere;
+}
+.field-label .optional { text-transform: none; letter-spacing: 0; font-weight: 600; opacity: .8; }
 
 .steps { margin: 0; padding-left: 18px; display: grid; gap: 12px; color: var(--muted); line-height: 1.6; }
 code { background: var(--surface-soft); padding: 3px 8px; border-radius: 8px; }

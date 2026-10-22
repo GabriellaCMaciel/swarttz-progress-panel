@@ -50,7 +50,10 @@ const Store = (() => {
   }
 
   function entryKey(entry) {
-    return [entry.date, entry.category, entry.type, entry.text].join("\u0001");
+    const parts = [entry.date, entry.category, entry.type, entry.text];
+    // o link só entra na identidade quando existe, para os registros antigos continuarem iguais
+    if (entry.link) parts.push(entry.link);
+    return parts.join("\u0001");
   }
 
   function isValidDateString(value) {
@@ -74,6 +77,16 @@ const Store = (() => {
     if (entry.text.length > 500) throw new Error("A descrição pode ter até 500 caracteres.");
     if (!entry.category) throw new Error("Informe a categoria (ex.: Python, React, 42SP).");
     if (entry.category.length > 40) throw new Error("A categoria pode ter até 40 caracteres.");
+    const link = String(raw.link ?? "").trim();
+    if (link) {
+      if (link.length > 300) throw new Error("O link pode ter até 300 caracteres.");
+      let parsed = null;
+      try { parsed = new URL(link); } catch { parsed = null; }
+      if (!parsed || !["http:", "https:"].includes(parsed.protocol)) {
+        throw new Error("O link precisa ser um endereço completo, começando com http:// ou https://.");
+      }
+      entry.link = link;
+    }
     return entry;
   }
 

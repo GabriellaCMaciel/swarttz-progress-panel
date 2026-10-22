@@ -32,6 +32,16 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+// Só aceita endereços http/https (bloqueia javascript:, data: etc.), mesmo que o arquivo de dados seja alterado
+function safeLink(value) {
+  try {
+    const url = new URL(String(value ?? "").trim());
+    return url.protocol === "http:" || url.protocol === "https:" ? url : null;
+  } catch {
+    return null;
+  }
+}
+
 function plural(count, singular, pluralForm) {
   return `${count} ${count === 1 ? singular : pluralForm}`;
 }
@@ -230,6 +240,17 @@ function renderTimeline(sortedEntries, pendingKeys) {
         ${waiting}
       </div>
     `;
+    const evidence = entry.link ? safeLink(entry.link) : null;
+    if (evidence) {
+      const anchor = document.createElement("a");
+      anchor.className = "evidence-link";
+      anchor.href = evidence.href;
+      anchor.target = "_blank";
+      anchor.rel = "noopener noreferrer";
+      anchor.textContent = `🔗 ${evidence.hostname.replace(/^www\./, "")}`;
+      anchor.setAttribute("aria-label", `Abrir evidência em ${evidence.hostname}`);
+      item.querySelector(".timeline-text").insertAdjacentElement("afterend", anchor);
+    }
     // Editar e excluir só aparecem com o GitHub conectado (sem token o painel é somente leitura)
     if (currentState.hasToken) item.querySelector(".timeline-main").appendChild(buildEntryActions(entry));
     timeline.appendChild(item);
@@ -484,6 +505,7 @@ function openRegister() {
 
   document.getElementById("fieldText").value = "";
   document.getElementById("fieldCategory").value = "";
+  document.getElementById("fieldLink").value = "";
   document.getElementById("charCount").textContent = "0";
   showFormError("");
   setFormDate("today");
@@ -508,6 +530,7 @@ function openEdit(entry) {
 
   document.getElementById("fieldText").value = entry.text;
   document.getElementById("fieldCategory").value = entry.category;
+  document.getElementById("fieldLink").value = entry.link || "";
   document.getElementById("charCount").textContent = entry.text.length;
   document.getElementById("fieldDate").value = entry.date;
   updateDateChips();
@@ -526,6 +549,7 @@ function submitRegister(event) {
     type: form.elements.type.value,
     text: form.elements.text.value,
     category: form.elements.category.value,
+    link: form.elements.link.value,
     date: form.elements.date.value
   };
 
