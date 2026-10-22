@@ -1,4 +1,4 @@
-# Swartz Progress Panel
+# Swarttz Progress Panel
 
 Um painel visual para registrar aprendizados, entregas, projetos e conquistas, com o formulário dentro do próprio site.
 
