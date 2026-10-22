@@ -670,7 +670,6 @@ function setupRegisterForm() {
   setupDialog(dialog);
 
   document.getElementById("registerBtn").addEventListener("click", () => openRegister());
-  document.getElementById("openRegisterBtn").addEventListener("click", () => openRegister());
   dialog.addEventListener("close", () => { editingEntry = null; });
 
   form.addEventListener("submit", submitRegister);

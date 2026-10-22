@@ -121,7 +121,6 @@ button { font: inherit; }
   border: 1px solid var(--border);
   display: flex; flex-direction: column; gap: 6px;
 }
-.sidebar-card.compact { gap: 10px; }
 .sidebar-card .card-kicker { margin: 0; color: var(--muted); font-size: .8rem; }
 .sidebar-card strong { font-size: 1.45rem; }
 .sidebar-card span { color: var(--muted); line-height: 1.5; }
