@@ -207,25 +207,42 @@ function renderCharts(entries) {
     }
   });
 
+  // Barras horizontais leem melhor que uma rosca quando há muitas categorias: mostra as 8 maiores e agrupa o resto
+  const MAX_CATEGORIES = 8;
+  const shown = categories.slice(0, MAX_CATEGORIES);
+  const rest = categories.slice(MAX_CATEGORIES).reduce((sum, [, count]) => sum + count, 0);
+  if (rest) shown.push(["Outras", rest]);
+
   categoryChart = new Chart(document.getElementById("categoryChart"), {
-    type: "doughnut",
+    type: "bar",
     data: {
-      labels: categories.map(([name]) => name),
-      datasets: [{
-        data: categories.map(([, count]) => count),
-        backgroundColor: [styles.accent, styles.accent2, "#7e8cff", "#ff9ad8", "#cba9ff", "#b1c5ff", "#ffb6ec"]
-      }]
+      labels: shown.map(([name]) => name),
+      datasets: [{ label: "Registros", data: shown.map(([, count]) => count), backgroundColor: styles.accent, borderRadius: 8 }]
     },
     options: {
+      indexAxis: "y",
       responsive: true,
-      plugins: {
-        legend: {
-          position: "bottom",
-          labels: { color: styles.textColor, boxWidth: 12, usePointStyle: true, pointStyle: "circle" }
-        }
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { color: styles.textColor, precision: 0 }, grid: { color: styles.borderColor } },
+        y: { grid: { display: false }, ticks: { color: styles.textColor } }
       }
     }
   });
+
+  // Texto alternativo: quem usa leitor de tela recebe os mesmos números que os gráficos mostram
+  describeChart("monthlyChart", monthLabels.length
+    ? `Gráfico de linha com registros por mês. ${monthLabels.map((label, i) => `${label}: ${monthValues[i]}`).join("; ")}.`
+    : "Gráfico de registros por mês, ainda sem dados.");
+  describeChart("categoryChart", shown.length
+    ? `Gráfico de barras com registros por categoria. ${shown.map(([name, count]) => `${name}: ${count}`).join("; ")}.`
+    : "Gráfico de registros por categoria, ainda sem dados.");
+}
+
+function describeChart(id, text) {
+  const canvas = document.getElementById(id);
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", text);
 }
 
 // ---------- linha do tempo ----------
